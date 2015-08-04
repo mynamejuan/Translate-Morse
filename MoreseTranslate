@@ -1,0 +1,94 @@
+Name:			Juan Davila
+	Class:		1213-001
+	Program:		Morse Code
+	Purpose:		Translates Strings into Morse code.
+*/
+
+import java.io.File;
+import java.util.Scanner;
+
+public class Translate
+{
+	// Identifying the variables.
+	private String[] morseKey;   
+	private String[] value;
+
+	public Translate()
+	{
+		//Sets the arrays to the Morse.txt file
+		morseKey = new String[55];
+		value = new String[55];
+		load();
+	}
+	
+		
+	public String translate(String in)
+	{
+		// Keepin the format the same
+		in = in.toUpperCase();
+		
+		// Create scanner for text
+		Scanner text = new Scanner(in);
+		String returnThis="";
+		
+		while(text.hasNext())
+		{
+			returnThis+=getMorseWord(text.next());
+		}
+		
+		return returnThis;
+	}
+	
+	//Gets the entire word in morse code
+	private String getMorseWord(String s)
+	{
+		String returnThis = "";
+		for(int i = 0; i < s.length(); i++)
+		{
+			returnThis+=getMorse(s.charAt(i))+" ";
+		}
+		
+		return returnThis+"   ";
+	}
+	
+	//Changes the characters to morse code
+	private String getMorse(char c)
+	{
+		for(int i = 0; i < morseKey.length; i++)
+		{
+			//If found, the character return its value
+			if(morseKey[i].equals(c+""))
+			return value[i];
+		}
+			//If cannot find the character just return it.
+			return c+"";
+	}
+	
+	//Loads the file Morse.txt into the arrays.
+	private void load()
+	{
+		try
+		{
+			Scanner fileIn = new Scanner(new File("Morse.txt"));
+			int i=0;
+			
+			// Just set every odd value as a key and every even value as a value 
+			while(fileIn.hasNext())
+			{
+				morseKey[i] = fileIn.next();
+				
+				//Makes it unified to our input
+				morseKey[i] = morseKey[i].toUpperCase();
+				value[i] = fileIn.next();
+				i++;
+			}
+	}
+	 
+	//This will display if a file is not found
+	catch(Exception e)
+	{
+		System.out.println("File not found, make sure file exists");
+	}
+	
+}
+}
